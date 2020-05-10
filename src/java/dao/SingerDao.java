@@ -5,7 +5,7 @@
  */
 package dao;
 
-import entity.Song;
+import entity.Singer;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -16,24 +16,24 @@ import util.DBConnection;
  *
  * @author SAMSUNG
  */
-public class SongDao extends DBConnection {
-
-    public void create(Song s) {
+public class SingerDao extends DBConnection {
+    
+    public void create(Singer singer) {
         try {
             Statement st = this.connect().createStatement();
-            st.executeUpdate("insert into song (song_name, song_year, song_path, singer_id, category_id, language_id) values ('" + s.getSong_name() + "','" + s.getSong_year() + "' ,'" + s.getSong_path() + "' ,'" + s.getSinger_id() + "', '" + s.getCategory_id() + "', '" + s.getLanguage_id() + "' )");
+            st.executeUpdate("insert into singer (first_name,last_name,singer_foto) values ('" + singer.getFirst_name() + "', '"+singer.getLast_name()+"', '"+singer.getSinger_foto()+"')");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-
-    public List<Song> read() {
-        List<Song> list = new ArrayList<>();
+    
+    public List<Singer> read() {
+        List<Singer> list = new ArrayList<>();
         try {
             Statement st = this.connect().createStatement();
-            ResultSet rs = st.executeQuery("select * from song");
+            ResultSet rs = st.executeQuery("select * from singer");
             while (rs.next()) {
-                Song tmp = new Song(rs.getInt("song_id"), rs.getString("song_name"), rs.getDate("song_year"), rs.getString("song_path"), rs.getInt("singer_id"), rs.getInt("category_id"), rs.getInt("language_id"));
+                Singer tmp = new Singer(rs.getInt("singer_id"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("singer_foto"));
                 list.add(tmp);
             }
         } catch (Exception e) {
@@ -41,5 +41,4 @@ public class SongDao extends DBConnection {
         }
         return list;
     }
-
 }
